@@ -3,39 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Простой калькулятор</title>
+    <title>🏗️ Строительный Калькулятор</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="calculator">
-        <h1>Калькулятор</h1>
-        <input type="text" id="display" class="display" readonly>
-        
-        <div class="buttons">
-            <button class="btn clear" onclick="clearDisplay()">C</button>
-            <button class="btn operator" onclick="appendOperator('/')">/</button>
-            <button class="btn operator" onclick="appendOperator('*')">×</button>
-            <button class="btn operator" onclick="appendOperator('-')">-</button>
-            
-            <button class="btn number" onclick="appendNumber('7')">7</button>
-            <button class="btn number" onclick="appendNumber('8')">8</button>
-            <button class="btn number" onclick="appendNumber('9')">9</button>
-            <button class="btn operator" onclick="appendOperator('+')">+</button>
-            
-            <button class="btn number" onclick="appendNumber('4')">4</button>
-            <button class="btn number" onclick="appendNumber('5')">5</button>
-            <button class="btn number" onclick="appendNumber('6')">6</button>
-            <button class="btn decimal" onclick="appendNumber('.')">.</button>
-            
-            <button class="btn number" onclick="appendNumber('1')">1</button>
-            <button class="btn number" onclick="appendNumber('2')">2</button>
-            <button class="btn number" onclick="appendNumber('3')">3</button>
-            <button class="btn equals" onclick="calculate()">=</button>
-            
-            <button class="btn number zero" onclick="appendNumber('0')">0</button>
+    <div class="container">
+        <div class="calculator">
+            <h1>🏗️ Строительный Калькулятор</h1>
+
+            <!-- Выбор единиц измерения -->
+            <div class="unit-selector">
+                <label for="unit">Единица:</label>
+                <select id="unit" onchange="updateUnit()">
+                    <option value="m">Метр (м)</option>
+                    <option value="cm">Сантиметр (см)</option>
+                    <option value="mm">Миллиметр (мм)</option>
+                    <option value="ft">Фут (ft)</option>
+                    <option value="inch">Дюйм (in)</option>
+                </select>
+            </div>
+
+            <!-- Вкладки режимов -->
+            <tabs>
+                <tab-btn class="tab-button active" data-mode="basic" onclick="switchMode('basic')">🔢 Базовый</tab-btn>
+                <tab-btn class="tab-button" data-mode="area" onclick="switchMode('area')">📐 Площадь</tab-btn>
+                <tab-btn class="tab-button" data-mode="volume" onclick="switchMode('volume')">📦 Объём</tab-btn>
+                <tab-btn class="tab-button" data-mode="perimeter" onclick="switchMode('perimeter')">⬜ Периметр</tab-btn>
+                <tab-btn class="tab-button" data-mode="convert" onclick="switchMode('convert')">🔄 Конверт</tab-btn>
+            </tabs>
+
+            <!-- ===== РЕЖИМ: БАЗОВЫЙ КАЛЬКУЛЯТОР ===== -->
+            <div id="basic" class="mode-content active">
+                <input type="text" id="display" class="display" readonly>
+
+                <div class="buttons">
+                    <button class="btn clear" onclick="clearDisplay()">C</button>
+                    <button class="btn operator" onclick="appendOperator('/')">/</button>
+                    <button class="btn operator" onclick="appendOperator('*')">×</button>
+                    <button class="btn operator" onclick="appendOperator('-')">-</button>
+
+                    <button class="btn number" onclick="appendNumber('7')">7</button>
+                    <button class="btn number" onclick="appendNumber('8')">8</button>
+                    <button class="btn number" onclick="appendNumber('9')">9</button>
+                    <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+                    <button class="btn number" onclick="appendNumber('4')">4</button>
+                    <button class="btn number" onclick="appendNumber('5')">5</button>
+                    <button class="btn number" onclick="appendNumber('6')">6</button>
+                    <button class="btn decimal" onclick="appendNumber('.')">.</button>
+
+                    <button class="btn number" onclick="appendNumber('1')">1</button>
+                    <button class="btn number" onclick="appendNumber('2')">2</button>
+                    <button class="btn number" onclick="appendNumber('3')">3</button>
+                    <button class="btn equals" onclick="calculate()">=</button>
+
+                    <button class="btn number zero" onclick="appendNumber('0')">0</button>
+                </div>
+            </div>
+
+            <!-- ===== РЕЖИМ: ПЛОЩАДЬ ===== -->
+            <div id="area" class="mode-content">
+                <div class="input-group">
+                    <label>Длина</label>
+                    <input type="number" id="area-length" class="number-input" placeholder="Введите длину" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Ширина</label>
+                    <input type="number" id="area-width" class="number-input" placeholder="Введите ширину" step="0.01">
+                </div>
+                <button class="calculate-btn" onclick="calculateArea()">📐 Рассчитать площадь</button>
+                <div id="area-result" class="result"></div>
+                <div style="text-align: center; margin-top: 10px; color: #999; font-size: 12px;">
+                    <span id="area-unit-info">Результат в м²</span>
+                </div>
+            </div>
+
+            <!-- ===== РЕЖИМ: ОБЪЁМ ===== -->
+            <div id="volume" class="mode-content">
+                <div class="input-group">
+                    <label>Длина</label>
+                    <input type="number" id="volume-length" class="number-input" placeholder="Введите длину" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Ширина</label>
+                    <input type="number" id="volume-width" class="number-input" placeholder="Введите ширину" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Высота</label>
+                    <input type="number" id="volume-height" class="number-input" placeholder="Введите высоту" step="0.01">
+                </div>
+                <button class="calculate-btn" onclick="calculateVolume()">📦 Рассчитать объём</button>
+                <div id="volume-result" class="result"></div>
+                <div style="text-align: center; margin-top: 10px; color: #999; font-size: 12px;">
+                    <span id="volume-unit-info">Результат в м³</span>
+                </div>
+            </div>
+
+            <!-- ===== РЕЖИМ: ПЕРИМЕТР ===== -->
+            <div id="perimeter" class="mode-content">
+                <div class="input-group">
+                    <label>Длина</label>
+                    <input type="number" id="perimeter-length" class="number-input" placeholder="Введите длину" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Ширина</label>
+                    <input type="number" id="perimeter-width" class="number-input" placeholder="Введите ширину" step="0.01">
+                </div>
+                <button class="calculate-btn" onclick="calculatePerimeter()">⬜ Рассчитать периметр</button>
+                <div id="perimeter-result" class="result"></div>
+                <div style="text-align: center; margin-top: 10px; color: #999; font-size: 12px;">
+                    <span id="perimeter-unit-info">Результат в м</span>
+                </div>
+            </div>
+
+            <!-- ===== РЕЖИМ: КОНВЕРТАЦИЯ ===== -->
+            <div id="convert" class="mode-content">
+                <div class="input-group">
+                    <label>Значение</label>
+                    <input type="number" id="convert-value" class="number-input" placeholder="Введите значение" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label>Из</label>
+                    <select id="convert-from">
+                        <option value="m">Метр (м)</option>
+                        <option value="cm">Сантиметр (см)</option>
+                        <option value="mm">Миллиметр (мм)</option>
+                        <option value="ft">Фут (ft)</option>
+                        <option value="inch">Дюйм (in)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>В</label>
+                    <select id="convert-to">
+                        <option value="m">Метр (м)</option>
+                        <option value="cm">Сантиметр (см)</option>
+                        <option value="mm">Миллиметр (мм)</option>
+                        <option value="ft">Фут (ft)</option>
+                        <option value="inch">Дюйм (in)</option>
+                    </select>
+                </div>
+                <button class="calculate-btn" onclick="convertUnits()">🔄 Конвертировать</button>
+                <div id="convert-result" class="result"></div>
+            </div>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,38 +1,345 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+}
+
 .calculator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-  background-color: #f0f0f0;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    animation: slideIn 0.3s ease-out;
 }
 
-.calculator__buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 20px;
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.button {
-  padding: 20px;
-  font-size: 1.5em;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: #007BFF;
-  color: white;
-  transition: background-color 0.3s;
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
 }
 
-.button:hover {
-  background-color: #0056b3;
+/* ========== ВЫБОР ЕДИНИЦ ИЗМЕРЕНИЯ ========== */
+
+.unit-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #f5f5f5;
+    border-radius: 10px;
 }
+
+.unit-selector label {
+    font-weight: 600;
+    color: #555;
+    white-space: nowrap;
+}
+
+.unit-selector select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #667eea;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background: white;
+    transition: all 0.3s;
+}
+
+.unit-selector select:hover {
+    background: #f9f9f9;
+}
+
+.unit-selector select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ========== ВКЛАДКИ ========== */
+
+tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+tab-btn {
+    flex: 1;
+    min-width: 80px;
+    padding: 10px;
+    border: 2px solid #ddd;
+    background: white;
+    color: #666;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 12px;
+}
+
+tab-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+tab-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* ========== СОДЕРЖИМОЕ РЕЖИМОВ ========== */
+
+.mode-content {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.mode-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ========== ДИСПЛЕЙ КАЛЬКУЛЯТОРА ========== */
+
+.display {
+    width: 100%;
+    padding: 15px;
+    font-size: 28px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    text-align: right;
+    background: #f9f9f9;
+    color: #333;
+    font-weight: 500;
+}
+
+.display:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ========== КНОПКИ ========== */
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.btn {
+    padding: 18px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn.number {
+    background: #667eea;
+    grid-column: span 1;
+}
+
+.btn.number:hover {
+    background: #5568d3;
+}
+
+.btn.operator {
+    background: #764ba2;
+    font-size: 20px;
+}
+
+.btn.operator:hover {
+    background: #6a3d8a;
+}
+
+.btn.equals {
+    background: #00b894;
+    grid-column: span 1;
+}
+
+.btn.equals:hover {
+    background: #00a07b;
+}
+
+.btn.clear {
+    background: #d63031;
+    grid-column: span 1;
+}
+
+.btn.clear:hover {
+    background: #b71c1c;
+}
+
+.btn.decimal {
+    background: #667eea;
+}
+
+.btn.zero {
+    grid-column: span 2;
+}
+
+/* ========== ПОЛЯ ВВОДА ДЛЯ ВЫЧИСЛЕНИЙ ========== */
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.number-input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.number-input:focus,
+select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ========== КНОПКА РАСЧЁТА ========== */
+
+.calculate-btn {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 15px 0;
+}
+
+.calculate-btn:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+}
+
+.calculate-btn:active {
+    transform: translateY(0);
+}
+
+/* ========== РЕЗУЛЬТАТЫ ========== */
+
+.result {
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result .success {
+    color: #00b894;
+    font-weight: 600;
+}
+
+.result .error {
+    color: #d63031;
+    font-weight: 600;
+}
+
+/* ========== АДАПТИВНЫЙ ДИЗАЙН ========== */
 
 @media (max-width: 600px) {
-  .button {
-    font-size: 1.2em;
-    padding: 15px;
-  }
+    .calculator {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .tabs {
+        gap: 5px;
+    }
+
+    .tab-btn {
+        min-width: 70px;
+        padding: 8px 5px;
+        font-size: 11px;
+    }
+
+    .btn {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    .display {
+        font-size: 24px;
+        padding: 12px;
+    }
 }
